@@ -40,7 +40,7 @@ Pour cette requête, il faut au préalable creer un index 2dsphere pour pouvoir 
 db.calls.createIndex({coordinates: "2dsphere" })
 ```
 
-Requête MongoDB :
+Requête :
 ```
 db.calls.find(
   {
@@ -57,6 +57,25 @@ db.calls.find(
 ).count()
 ```
 
+
+### Compter le nombre d'appels par catégorie
+
+Requête :
+```
+db.calls.aggregate([
+    { 
+      $group: {
+        _id: "$category",
+        count: { $sum: 1 } 
+      }
+    }, { $project: {
+      _id: 0,
+      name: "$_id",  
+      count: "$count"
+   }
+}
+])
+```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
