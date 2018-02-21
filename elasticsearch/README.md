@@ -21,9 +21,38 @@ GET <nom de votre index>/_count
 
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
+### Question 1 : Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
 ```
-TODO : ajouter les requêtes ElasticSearch ici
+GET call_index/call/_count
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all":{}
+      },
+      "filter": {
+          "geo_distance": {
+          "distance": "500m",
+          "location": {
+            "lat": 40.241493,
+            "lon": -75.283783
+          }
+        }
+      }
+    }
+  }
+}
 ```
+
+### Question 2 : Compter le nombre d'appels par catégorie
+```
+
+```
+
+### Question 3 : Trouver les 3 mois ayant comptabilisés le plus d'appels
+
+
+### Question 4 : Trouver le top 3 des villes avec le plus d'appels pour overdose
 
 ## Kibana
 
