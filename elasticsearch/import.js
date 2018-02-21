@@ -33,7 +33,7 @@ fs.createReadStream('../911.csv')
 		zip : data.zip,
 		title : data.title.substr(data.title.indexOf(':') + 1, data.title.length - 1).trim(),
 		cat : data.title.substr(0, data.title.indexOf(':')).trim(),
-		timeStamp : data.timeStamp,
+		timeStamp : new Date(data.timeStamp),
 		twp : data.twp,
 		addr : data.addr,
 		e : data.e

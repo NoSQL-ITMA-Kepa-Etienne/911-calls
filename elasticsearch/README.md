@@ -46,32 +46,57 @@ GET call_index/call/_count
 
 ### Question 2 : Compter le nombre d'appels par catégorie
 ```
-
+GET 911/appel/_search
+{
+  "size": 0, 
+  "aggs": {
+    "group_by_cat": {
+      "terms": {
+        "field": "cat.keyword"
+      }
+    }
+  }
+}
 ```
 
 ### Question 3 : Trouver les 3 mois ayant comptabilisés le plus d'appels
-
+```
+GET 911/appel/_search
+{
+  "size": 0, 
+  "aggs": {
+    "group_by_nbCalls": {
+      "date_histogram": {
+        "field": "timeStamp",
+        "interval" : "month",
+        "order": {
+          "_count": "desc"
+        }
+      }
+    }
+  }
+}
+```
 
 ### Question 4 : Trouver le top 3 des villes avec le plus d'appels pour overdose
-
-## Kibana
-
-Dans Kibana, créez un dashboard qui permet de visualiser :
-
-* Une carte de l'ensemble des appels
-* Un histogramme des appels répartis par catégories
-* Un Pie chart réparti par bimestre, par catégories et par canton (township)
-
-Pour nous permettre d'évaluer votre travail, ajoutez une capture d'écran du dashboard dans ce répertoire [images](images).
-
-### Timelion
-Timelion est un outil de visualisation des timeseries accessible via Kibana à l'aide du bouton : ![](images/timelion.png)
-
-Réalisez le diagramme suivant :
-![](images/timelion-chart.png)
-
-Envoyer la réponse sous la forme de la requête Timelion ci-dessous:  
-
 ```
-TODO : ajouter la requête Timelion ici
+GET 911/appel/_search
+{
+  "size" : 0,
+  "query" : {
+    "match" : {
+      "title" : "OVERDOSE"
+    }
+  },
+  "aggs" : {
+      "group_by_city": {
+      "terms": {
+        "field": "twp.keyword",
+        "order": {
+          "_count": "desc"
+        }
+      }
+    }
+  }
+}
 ```
