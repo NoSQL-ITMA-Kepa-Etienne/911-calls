@@ -105,6 +105,45 @@ db.calls.aggregate  ([
 ) 
 ```
 
+### Trouver le top 3 des villes avec le plus d'appels pour overdose
+
+Pour cette requête, il faut au préalable creer un index text pour pouvoir filtrer les events:
+
+```
+db.calls.createIndex({event: "text" })
+```
+
+Requête :
+```
+db.calls.aggregate([
+  {
+    $match: {
+      $text: {
+        $search : "OVERDOSE"
+      }
+    }
+  },
+    { 
+      $group: {
+        _id: "$township",
+        count: { $sum: 1 } 
+      }
+    }, { $project: {
+      _id: 0,
+      name: "$_id",  
+      count: "$count"
+    }}, 
+	{
+		$sort: {
+			count: -1
+		}
+	},
+	{
+	$limit: 3
+	}
+
+])
+```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
